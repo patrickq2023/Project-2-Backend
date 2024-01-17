@@ -28,10 +28,19 @@ const climbsSchema = new mongoose.Schema({
     location: String,
     elevation: String, 
     category: String,
-    done: Boolean       
+    done: Boolean,
+    comments: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'comment'
+    }]   
+})
+
+const commentsSchema = new mongoose.Schema({
+    comment: String
 })
 
 const Climb = mongoose.model('Climb', climbsSchema)
+const Comments = mongoose.model('comment', commentsSchema )
 
 
 app.post('/climb/new',(req, res) => {
@@ -50,7 +59,7 @@ app.get('/climb', async (req, res) => {
     res.json(allClimbs)    
 })
 
-app.get('climb/:id', async(req, res) => {
+app.get('/climb/:id', async(req, res) => {
     const climb = await Climb.findById(req.params.id)
     res.json(climb)
 })
@@ -77,3 +86,20 @@ app.put('/climb/:id', async(req,res) => {
             res.sendStatus(500)
         })
 })
+
+// app.post('/climb/:id/comments', async function(req, res) {       
+//     const comment = new Comment({
+//         comment: req.body.comment        
+//     })
+//     const climbId = await Climb.findById(climbId)      
+//     climb.comments.push(comment)
+//     const climbwithcomment = await climb.save()
+    
+//     .then(() => {
+//         res.sendStatus(200)
+//     })
+//     .catch( err => {
+//         console.error(err)
+//         res.sendStatus(500)
+//     })
+// })
