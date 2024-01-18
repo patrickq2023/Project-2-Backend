@@ -35,12 +35,24 @@ const climbsSchema = new mongoose.Schema({
     }]   
 })
 
+const userSchema = new mongoose.Schema({
+    userEmail: {
+      type: String,
+      required: true        
+    },
+    lastLogin: {
+      type: Date,
+      required: true
+    }     
+})
+
 const commentsSchema = new mongoose.Schema({
     comment: String
 })
 
 const Climb = mongoose.model('Climb', climbsSchema)
 const Comments = mongoose.model('comment', commentsSchema )
+const User = mongoose.model('User', userSchema)
 
 
 app.post('/climb/new',(req, res) => {
@@ -103,3 +115,27 @@ app.put('/climb/:id', async(req,res) => {
 //         res.sendStatus(500)
 //     })
 // })
+
+
+
+app.post('/user/login', async (req, res) => {
+    const now = new Date()
+  
+    if( await User.countDocuments({"userEmail": req.body.userEmail}) === 0) {
+      const newUser = new User ({
+        userEmail: req.body.userEmail,
+        lastLogin: now
+      })
+      newUser.save()
+      .then(() => {
+        res.sendStatus(200)
+      })
+      .catch(err => {
+        res.sendStatus(500)
+      })
+    } else {
+      await User.findOneAndUpdate({"userEmail": req.body.userEmail}, {lastLogin: now})
+      res.sendStatus(200)
+    }
+  })
+
