@@ -78,6 +78,7 @@ router.delete('/climb/:id', (req, res) => {
         res.sendStatus(200)
     })
     .catch(err => {
+        console.log(err)
         res.sendStatus(500)
     })
 })
@@ -125,6 +126,7 @@ router.post('/user/login', async (req, res) => {
         res.sendStatus(200)
       })
       .catch(err => {
+        console.log(err)
         res.sendStatus(500)
       })
     } else {
