@@ -112,8 +112,6 @@ router.put('/climb/:id', async(req,res) => {
 //     })
 // })
 
-
-
 router.post('/user/login', async (req, res) => {
     const now = new Date()
   
