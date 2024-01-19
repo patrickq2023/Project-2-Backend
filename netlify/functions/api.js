@@ -10,6 +10,9 @@ const api = express()
 api.use(cors())
 api.use(bodyParser.json())
 
+const router = Router()
+
+
 mongoose.connect(process.env.DATABASE_URL)
 
 router.get('/', (req, res) => {
@@ -49,7 +52,7 @@ const Climb = mongoose.model('Climb', climbsSchema)
 const Comments = mongoose.model('comment', commentsSchema )
 const User = mongoose.model('User', userSchema)
 
-const router = Router()
+
 
 router.post('/climb/new',(req, res) => {
     const climb = req.body
